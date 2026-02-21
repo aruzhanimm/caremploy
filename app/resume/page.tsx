@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from 'react';
 import Link from 'next/link';
+const API = process.env.NEXT_PUBLIC_API;
 
 export default function ResumeArchitect() {
   // Состояния приложения
@@ -259,4 +260,36 @@ export default function ResumeArchitect() {
       </main>
     </div>
   );
+
+   const handleImprove = async () => {
+  const res = await fetch(`${API}/resumes/improve`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ text: resumeData.experience }),
+  });
+
+  const data = await res.json();
+
+  setResumeData({
+    ...resumeData,
+    experience: data.improved,
+  });
+};
+
+const handleSave = async () => {
+  await fetch(`${API}/resumes`, {
+    method: "POST",
+    credentials: "include",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      content: JSON.stringify(resumeData),
+      skills: resumeData.skills.split(",").map(s => s.trim()),
+      template,
+    }),
+  });
+
+  alert("Сохранено в базу данных");
+};
+
 }
