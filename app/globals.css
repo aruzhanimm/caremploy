@@ -1,5 +1,15 @@
 @import "tailwindcss";
 
+@tailwind utilities;
+
+/* Добавь вот этот блок: */
+@layer base {
+  html, body {
+    @apply bg-slate-950;
+    /* Либо можно жестко отключить саму "резинку" добавив: overscroll-none */
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
